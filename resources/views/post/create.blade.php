@@ -10,7 +10,7 @@
                         <select id="category_id" name="category_id" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full">
                             <option value="">Select a category</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}">
+                                <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
                                     {{ $category->name }}
                                 </option>
                             @endforeach
@@ -37,8 +37,9 @@
                     <!-- Content -->
                     <div class="mt-4">
                         <x-input-label for="content" :value="__('Content')" />
-                        <x-textarea-input id="content" class="block mt-1 w-full" type="text" name="content"
-                            :value="old('content')"></x-textarea-input>
+                        <x-textarea-input id="content" class="block mt-1 w-full" type="text" name="content">
+                            {{ old('content') }}
+                        </x-textarea-input>
                         <x-input-error :messages="$errors->get('content')" class="mt-2" />
                     </div>
 

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Category;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Requests\PostCreateRequest;
 
 class PostController extends Controller
 {
@@ -34,22 +37,30 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostCreateRequest $request)
     {
-        $request->validate([
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'title' => 'required|max:255',
-            'content' => 'required',
-            'category_id' => ['required', 'exists:categories,id'],
-        ]);
+        $data = $request->validated();
+
+        
+        $image = $data['image'];
+        unset($data['image']);
+        $data['user_id'] = Auth::id();
+        $data['slug'] = Str::slug($data['title']);
+        
+        $imagePath = $image->store('posts', 'public');
+        $data['image'] = $imagePath; 
+        
+        Post::create($data);
+
+        return redirect()->route('dashboard');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(string $username, Post $post)
     {
-        //
+        return 'Works '.$post->slug;
     }
 
     /**
