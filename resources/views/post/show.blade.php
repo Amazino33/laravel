@@ -31,7 +31,7 @@
 
 
                 <!-- Clap Section  -->
-                <x-clap-btn />
+                <x-clap-btn :post="$post"/>
                 <!-- /Clap Section  -->
 
                 {{-- content section --}}
@@ -54,7 +54,7 @@
                 <!-- Category Section  -->
 
                 <!-- Clap Section  -->
-                <x-clap-btn />
+                <x-clap-btn :post="$post"/>
                 <!-- /Clap Section  -->
             </div>
         </div>
