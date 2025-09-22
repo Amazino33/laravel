@@ -15,17 +15,24 @@
                         </div>
                     </div>
 
-                    <div class="w-[320px] border-l px-8">
+                    <x-follow-ctn :user="$user" >
                         <x-user-avatar :user="$user" size="w-24 h-24" />
                         <h3>{{ $user->name }}</h3>
-                        <p class="text-gray-500">{{ $user->followers()->count() }} followers</p>
+                        <p class="text-gray-500"><span x-text="followersCount"></span> followers</p>
                         <p>{{ $user->bio }}</p>
-                        <div class="mt-4">
-                            <button class="bg-emerald-500 rounded-xl px-4 py-2 text-white hover:bg-emerald-600">
-                                Follow
-                            </button>
-                        </div>
-                    </div>
+                        @if (auth()->user() && auth()->user()->id !== $user->id)
+                            <div class="mt-4">
+                                <button 
+                                    class="bg-emerald-500 rounded-xl px-4 py-2 text-white hover:bg-emerald-600"
+                                    x-text="following ? 'Unfollow' : 'Follow'"
+                                    :class="following ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-500 hover:bg-emerald-600'"
+                                    @click="follow()"
+                                >
+                                    
+                                </button>
+                            </div>
+                        @endif
+                    </x-follow-ctn>
                 </div>
             </div>
         </div>

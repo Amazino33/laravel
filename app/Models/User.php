@@ -74,4 +74,9 @@ class User extends Authenticatable implements MustVerifyEmail
 
         return null; // Return null if no image is set
     }
+
+    public function isFollowedBy(User $user)
+    {
+        return $this->followers()->where('follower_id', $user->id)->exists();
+    }
 }
