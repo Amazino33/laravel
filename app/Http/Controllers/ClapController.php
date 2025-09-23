@@ -9,9 +9,15 @@ class ClapController extends Controller
 {
     public function claps(Post $post)
     {
-        $post->claps()->create([
-            'user_id' => auth()->id(),
-        ]);
+        $hasClapped = auth()->user()->hasClapped($post);
+
+        if ($hasClapped) {
+            $post->claps()->where('user_id', auth()->id())->delete();
+        } else {
+            $post->claps()->create([
+                'user_id' => auth()->id()
+            ]);
+        } 
 
         return response()->json([
             'clapsCount' => $post->claps()->count(),
